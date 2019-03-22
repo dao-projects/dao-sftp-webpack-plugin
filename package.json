@@ -1,58 +1,24 @@
 {
-  "_from": "sftp-webpack-plugin",
-  "_id": "sftp-webpack-plugin@0.2.3",
-  "_inBundle": false,
-  "_integrity": "sha1-nhqXcU0Lhj4iDUOHpKPR5AlR22w=",
-  "_location": "/sftp-webpack-plugin",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "sftp-webpack-plugin",
-    "name": "sftp-webpack-plugin",
-    "escapedName": "sftp-webpack-plugin",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#DEV:/",
-    "#USER"
-  ],
-  "_resolved": "https://registry.npmjs.org/sftp-webpack-plugin/-/sftp-webpack-plugin-0.2.3.tgz",
-  "_shasum": "9e1a97714d0b863e220d4387a4a3d1e40951db6c",
-  "_spec": "sftp-webpack-plugin",
-  "_where": "C:\\workspace\\demo\\webpack-app\\01-demo",
-  "author": {
-    "name": "hades"
-  },
-  "bugs": {
-    "url": "https://github.com/iAmHades/sftp-webpack-plugin/issues"
-  },
-  "bundleDependencies": false,
-  "dependencies": {
-    "async-waterfall": "0.1.5",
-    "colors": "1.1.2",
-    "scp2": "0.2.2"
-  },
-  "deprecated": false,
-  "description": "it can allow the content of a folder upload to a remote server",
-  "homepage": "https://github.com/iAmHades/sftp-webpack-plugin#readme",
-  "keywords": [
-    "ssh",
-    "sftp",
-    "webpack",
-    "plugin",
-    "deplay",
-    "aliyun"
-  ],
-  "license": "MIT",
+  "name": "dao-sftp-webpack-plugin",
+  "version": "1.0.0",
+  "description": "基于webpack实现sftp上传功能（含scp2）",
   "main": "index.js",
-  "name": "sftp-webpack-plugin",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/iAmHades/sftp-webpack-plugin.git"
+    "url": "git+https://github.com/jsgu/dao-sftp-webpack-plugin.git"
   },
-  "scripts": {},
-  "version": "0.2.3"
+  "keywords": [
+    "webpack",
+    "scp2",
+    "sft"
+  ],
+  "author": "道心",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsgu/dao-sftp-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/jsgu/dao-sftp-webpack-plugin#readme"
 }
