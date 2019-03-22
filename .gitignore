@@ -1,0 +1,29 @@
+.DS_Store
+node_modules
+/dist
+/other
+loaders
+vue.config.test.js
+dist.zip
+docker*
+# local env files
+.env.local
+.env.*.local
+_*
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+debug.log*
+
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+*.iml
