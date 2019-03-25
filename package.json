@@ -13,12 +13,16 @@
   "keywords": [
     "webpack",
     "scp2",
-    "sft"
+    "sftp"
   ],
   "author": "道心",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jsgu/dao-sftp-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/jsgu/dao-sftp-webpack-plugin#readme"
+  "homepage": "https://github.com/jsgu/dao-sftp-webpack-plugin#readme",
+  "devDependencies": {
+    "async-waterfall": "^0.1.5",
+    "scp2": "^0.5.0"
+  }
 }

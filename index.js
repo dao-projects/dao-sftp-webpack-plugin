@@ -1,35 +1,91 @@
-'use strict'
-var fs = require('fs')
-var colors = require('colors')
-var fileUtils = require('./utils/file')
-var client = require('./utils/sftp')
-
-function SftpWebpackPlugin(options) {
-	if (!options || !options.port || !options.host || !options.username || !options.password || !options.from || !options.to) {
-		console.info('Some parameters of the problem，please set as the follow:')
-		console.info(" new".red + " SftpWebpackPlugin({");
-		console.info("   port:'your port',".yellow);
-		console.info("   host: 'your host',".yellow);
-		console.info("   username: 'your username',".yellow);
-		console.info("   password: 'your password',".yellow);
-		console.info("   from: 'you neeed upload file path',".yellow);
-		console.info("   to: 'you want to destination',".yellow);
-		console.info(" })");
-		throw new Error('Some parameters of the problem')
-	}
-	this.fileArray = [];
-	this.options = options;
+var fs = require('fs');
+var path = require('path');
+var client = require('scp2')
+var waterfall = require('async-waterfall');
+const pluginName = "daoSftpWebpackPlugin"
+const defaultConfig = {
+    port: '',
+    host: '',
+    username: '',
+    password: '',
+    from: '',
+    to: ''
 }
+class daoSftpWebpackPlugin {
+    constructor(config) {
+        const cfg = Object.assign(defaultConfig, config || {});
+        this.config = cfg;
+        this.info = {
+            host: cfg['host'],
+            username: cfg['username'],
+            password: cfg['password'],
+            path: cfg['to'],
+            port: cfg['port']
+        }
+        client.defaults(this.info);
+    }
+    apply(compiler) {
+        // https://webpack.js.org/api/compiler-hooks
+        compiler.hooks.done.tap(pluginName, (compilation) => {
+            const _ = this;
+            const { from, to } = _.config;
+            // console.log("config=>", _.config)
+            // console.log("编译完成后执行...")
+            // ==============================================================================
+            var queue = []
+            if (from && Array.isArray(from)) {
+                from.forEach(function(f) {
+                    putQueue(f, to, queue, client);
+                })
+            } else {
+                putQueue(from, to, queue, client);
+            }
+            queue.push(
+                function(callback) {
+                    client.close()
+                    callback()
+                }
+            )
+            //异步加载
+            waterfall(queue, function(err, result) {
+                if (err) {
+                    console.info(err)
+                } else {
+                    if (from && Array.isArray(from)) {
+                        from.forEach(function(f) {
+                            console.info("Files ( " + f + " ) uploaded !")
+                        })
+                    } else {
+                        console.info("Files ( " + from + " ) uploaded !")
+                    }
+                }
+            })
 
-SftpWebpackPlugin.prototype.apply = function(compiler) {
-	var _this = this;
-	compiler.plugin("done", function(compilation) {
-		_this.sftp();
-	});
-};
-
-SftpWebpackPlugin.prototype.sftp = function() {
-	client.sftp(this.options.port, this.options.host, this.options.username, this.options.password, this.options.from, this.options.to)
+            function putQueue(from, to, queue, client) {
+                var stats = fs.statSync(from)
+                if (stats.isDirectory()) {
+                    console.log("当前上传类型是目录....")
+                    queue.push(
+                        function(callback) {
+                            client.scp(from, _.info, function(err) {
+                                callback()
+                            })
+                        })
+                } else {
+                    console.log("当前上传类型是文件....")
+                    queue.push(
+                        function(callback) {
+                            var arr = from && from.split('/');
+                            var pathTo = (arr && arr.length) ? (to + '/' + arr[arr.length - 1]) : to;
+                            client.upload(from, pathTo, function(err) {
+                                callback()
+                            })
+                        }
+                    )
+                }
+            }
+            // ============================================================================== end
+        });
+    }
 }
-
-module.exports = SftpWebpackPlugin;
+module.exports = daoSftpWebpackPlugin;
